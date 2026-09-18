@@ -33,6 +33,9 @@ if [ -n "${HINDSIGHT_API_URL:-}" ]; then
     export HINDSIGHT_API_URL
 fi
 
+# Ensure omnigent hermes_native policy hook path is resolved
+python3 -c "import omnigent, os, pathlib; inner = pathlib.Path(omnigent.__file__).parent / 'inner'; target = pathlib.Path(omnigent.__file__).parent / 'harnesses' / 'hermes_native' / 'inner'; os.makedirs(target.parent, exist_ok=True); (not target.exists() and not os.path.islink(target)) and os.symlink(inner, target)" 2>/dev/null || true
+
 # Execute command or default to hermes
 if [ "$#" -eq 0 ]; then
     exec hermes

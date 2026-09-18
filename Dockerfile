@@ -10,7 +10,8 @@ ENV DEBIAN_FRONTEND=noninteractive \
 RUN git clone --depth 1 https://github.com/NousResearch/hermes-agent.git /opt/hermes-agent && \
     cd /opt/hermes-agent && \
     pip install --no-cache-dir -e '.[hindsight,firecrawl]' && \
-    mkdir -p /root/.hermes/hindsight /etc/hermes/hindsight
+    mkdir -p /root/.hermes/hindsight /etc/hermes/hindsight && \
+    python3 -c "import omnigent, os, pathlib; inner = pathlib.Path(omnigent.__file__).parent / 'inner'; target = pathlib.Path(omnigent.__file__).parent / 'harnesses' / 'hermes_native' / 'inner'; os.makedirs(target.parent, exist_ok=True); (not target.exists() and not os.path.islink(target)) and os.symlink(inner, target)"
 
 # Copy configuration files and templates
 COPY config/config.yaml /etc/hermes/config.yaml
