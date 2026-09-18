@@ -1,0 +1,300 @@
+model:
+  default: glm-5.3-flash
+  provider: custom
+  base_url: https://api.cheaperinference.com/v1
+  api_key: ${HERMES_CUSTOM_API_CHEAPERINFERENCE_COM_API_KEY}
+database:
+  journal_mode: wal
+runtime:
+  nofile_soft_limit: 4096
+agent:
+  max_turns: 150
+  service_tier: ''
+  fast_auto_seconds: 60
+  verbose: false
+  reasoning_effort: medium
+  personalities: {}
+terminal:
+  backend: local
+  cwd: .
+  timeout: 180
+  home_mode: auto
+  container_cpu: 1
+  container_memory: 5120
+  container_disk: 51200
+  container_persistent: true
+  docker_mount_cwd_to_workspace: false
+  lifetime_seconds: 300
+web:
+  backend: firecrawl
+browser:
+  backend: browser-use
+  inactivity_timeout: 120
+  extension_control:
+    enabled: false
+  cloud_provider: local
+tool_loop_guardrails:
+  warnings_enabled: true
+  hard_stop_enabled: false
+  non_interactive_hard_stop_enabled: true
+  warn_after:
+    exact_failure: 2
+    same_tool_failure: 3
+    idempotent_no_progress: 2
+  hard_stop_after:
+    exact_failure: 5
+    same_tool_failure: 8
+    idempotent_no_progress: 5
+compression:
+  enabled: true
+  checkpoint_required: false
+  progress_notices: false
+  threshold: 0.5
+  target_ratio: 0.2
+  protect_last_n: 20
+  min_tail_user_messages: 1
+  max_attempts: 3
+  proactive_prune_tokens: 0
+  proactive_prune_min_result_chars: 8000
+  proactive_prune_min_reclaim_tokens: 4096
+  hygiene_max_turn_hold_seconds: 10
+  protect_first_n: 3
+  codex_gpt55_autoraise: true
+  codex_app_server_auto: native
+  codex_responses_native: false
+  idle_compact_after_seconds: 0
+prompt_caching:
+  cache_ttl: 5m
+display:
+  compact: false
+  personality: technical
+  busy_input_mode: interrupt
+  bell_on_complete: false
+  bell_on_prompt: false
+  show_reasoning: false
+  background_process_notifications: concise
+  streaming: true
+  skin: default
+  interim_assistant_messages: true
+  tool_progress: all
+  cleanup_progress: false
+  long_running_notifications: true
+  busy_ack_detail: true
+stt:
+  enabled: true
+  language: en
+  local:
+    model: base
+  openai:
+    model: whisper-1
+    language: ''
+memory:
+  memory_enabled: true
+  user_profile_enabled: true
+  memory_char_limit: 2200
+  user_char_limit: 1375
+  nudge_interval: 10
+  provider: hindsight
+delegation:
+  max_iterations: 250
+skills:
+  creation_nudge_interval: 15
+kanban:
+  review_dispatch: true
+code_execution:
+  timeout: 300
+  max_tool_calls: 50
+gateway:
+  signal_interrupt_grace_timeout: 1
+  delivery_ledger: true
+  platform_connect_timeout: 30
+  loop_watchdog: true
+  loop_watchdog_probe_interval_s: 30.0
+  loop_watchdog_probe_timeout_s: 10.0
+  loop_watchdog_max_strikes: 3
+  startup_watchdog: true
+  startup_watchdog_timeout_seconds: 300
+  write_sessions_json: true
+  scale_to_zero:
+    idle_timeout_minutes: 2
+  restart_loop_guard:
+    max_restarts: 3
+    window_seconds: 60
+    max_gap_seconds: 300
+  respawn_storm:
+    max_starts: 5
+    window_seconds: 120
+  message_timestamps:
+    enabled: false
+  max_inbound_media_bytes: 134217728
+  trust_env: true
+  strict: false
+  media_delivery_allow_dirs: []
+  trust_recent_files: true
+  trust_recent_files_seconds: 600
+  api_server:
+    max_concurrent_runs: 10
+streaming:
+  enabled: false
+onboarding:
+  seen:
+    tool_progress_prompt: true
+telemetry:
+  shared_metrics:
+    enabled: false
+    send: false
+updates:
+  pre_update_backup: false
+  backup_keep: 5
+  non_interactive_local_changes: stash
+computer_use:
+  backend: cua
+_config_version: 41
+session_reset:
+  mode: none
+  idle_minutes: 1440
+  at_hour: 4
+group_sessions_per_user: true
+platform_toolsets:
+  cli:
+    - browser
+    - clarify
+    - code_execution
+    - computer_use
+    - cronjob
+    - delegation
+    - file
+    - image_gen
+    - memory
+    - session_search
+    - skills
+    - terminal
+    - todo
+    - tts
+    - vision
+    - web
+  telegram:
+    - hermes-telegram
+  discord:
+    - hermes-discord
+  whatsapp:
+    - hermes-whatsapp
+  slack:
+    - hermes-slack
+  signal:
+    - hermes-signal
+  homeassistant:
+    - hermes-homeassistant
+  qqbot:
+    - hermes-qqbot
+  yuanbao:
+    - hermes-yuanbao
+  teams:
+    - hermes-teams
+  google_chat:
+    - hermes-google_chat
+custom_providers:
+  - name: Api.cheaperinference.com
+    base_url: https://api.cheaperinference.com/v1
+    key_env: HERMES_CUSTOM_API_CHEAPERINFERENCE_COM_API_KEY
+    model: glm-5.3-flash
+    models:
+      claude-fable-5.1: {}
+      claude-opus-5: {}
+      deepseek-v4.1-flash: {}
+      glm-5.3: {}
+      glm-5.3-flash: {}
+      gpt-6-astra: {}
+      qwen-3-8-27b: {}
+      seedance-2.0: {}
+      glm-5.2: {}
+      gpt-5.6-sol: {}
+      claude-fable-5: {}
+      kimi-k3: {}
+      gpt-5.6-terra: {}
+      gpt-5.6-luna: {}
+      claude-opus-4-8-fast: {}
+      nano-banana: {}
+      claude-opus-4.8: {}
+      claude-opus-4.7: {}
+      claude-opus-4.6: {}
+      gpt-5.5: {}
+      gpt-5.4: {}
+      gemini-3.1-pro-preview: {}
+      grok-imagine: {}
+      nano-banana-pro: {}
+      nano-banana-2: {}
+      claude-sonnet-5: {}
+      claude-sonnet-4.6: {}
+      gpt-image-2: {}
+      deepseek-v4-flash: {}
+      minimax-m2.7: {}
+      grok-4.5: {}
+      deepseek-v4-pro: {}
+      gemini-3-5-flash: {}
+      gpt-5.4-mini: {}
+      aion-labs.aion-2-0: {}
+      claude-haiku-4.5: {}
+      claude-opus-4.5: {}
+      claude-sonnet-4.5: {}
+      gemini-2.5-flash: {}
+      gemini-3.1-pro: {}
+      gemini-3-flash-preview: {}
+      glm-4.5: {}
+      glm-4.5-air: {}
+      glm-4.6: {}
+      glm-4.7: {}
+      glm-5: {}
+      glm-5.1: {}
+      gemini-3.1-flash-lite: {}
+      google/gemini-3.5-flash-lite: {}
+      claude-opus-5-fast: {}
+      deepseek-v4-flash-0731: {}
+      gpt-5-nano: {}
+      gpt-4.1-nano: {}
+      gpt-5.4-nano: {}
+      qwen3-5-35b-a3b: {}
+      qwen3.6-27b: {}
+      qwen3-6-35b-a3b: {}
+      gemini-3.6-flash: {}
+      qwen-3-8-max: {}
+      gpt-5.2-codex: {}
+      gpt-5.5-pro: {}
+      gpt-oss-120b: {}
+      muse-spark-1.2: {}
+      gpt-5-mini: {}
+      deepseek-v4-pro-0813: {}
+      gemini-3.7-flash: {}
+    models_discovered: true
+known_plugin_toolsets:
+  cli:
+    - a2a
+    - spotify
+known_builtin_toolsets:
+  cli:
+    - browser
+    - clarify
+    - code_execution
+    - computer_use
+    - context_engine
+    - cronjob
+    - delegation
+    - discord
+    - discord_admin
+    - file
+    - homeassistant
+    - image_gen
+    - memory
+    - session_search
+    - skills
+    - spotify
+    - stt
+    - terminal
+    - todo
+    - tts
+    - video
+    - video_gen
+    - vision
+    - web
+    - x_search
+    - yuanbao
