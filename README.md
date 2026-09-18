@@ -46,7 +46,12 @@ This image is configured to run Hermes Agent identically to the host environment
 
 ## Building and Running with Docker
 
-### Build Image
+### Pull Pre-built Image from GHCR
+```bash
+docker pull ghcr.io/atomicell/modal-hermes-worker:latest
+```
+
+### Build Image Locally
 ```bash
 docker build -t modal-hermes-worker:latest .
 ```
@@ -56,7 +61,7 @@ docker build -t modal-hermes-worker:latest .
 docker run -it --rm \
   -e HERMES_CUSTOM_API_CHEAPERINFERENCE_COM_API_KEY="your-cheaperinference-api-key" \
   -e HINDSIGHT_API_KEY="your-hindsight-api-key" \
-  modal-hermes-worker:latest
+  ghcr.io/atomicell/modal-hermes-worker:latest
 ```
 
 ### Run a Single Hermes Command
@@ -64,7 +69,7 @@ docker run -it --rm \
 docker run --rm \
   -e HERMES_CUSTOM_API_CHEAPERINFERENCE_COM_API_KEY="your-cheaperinference-api-key" \
   -e HINDSIGHT_API_KEY="your-hindsight-api-key" \
-  modal-hermes-worker:latest hermes chat -q "What tools do you have available?"
+  ghcr.io/atomicell/modal-hermes-worker:latest hermes chat -q "What tools do you have available?"
 ```
 
 ---
