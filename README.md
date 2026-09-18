@@ -12,8 +12,9 @@ This image is configured to run Hermes Agent identically to the host environment
 ## Features & Configuration
 
 1. **Base Image**: `ghcr.io/omnigent-ai/omnigent-host:latest` with Python 3.12, Node.js, and system utilities.
-2. **Hermes Agent**: Installed from official repository with extras `[hindsight, firecrawl, modal]`.
-3. **Inference Provider**:
+2. **Hermes Agent**: Installed from official repository with extras `[hindsight, firecrawl]`.
+3. **Execution Environment**: Runs directly inside the sandbox container (`terminal.backend: local`) without nested Modal sub-sandboxes.
+4. **Inference Provider**:
    - Provider: `custom` (OpenAI-compatible)
    - Base URL: `https://api.cheaperinference.com/v1`
    - Default Model: `glm-5.3-flash`
