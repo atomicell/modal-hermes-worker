@@ -40,7 +40,6 @@ This image is configured to run Hermes Agent identically to the host environment
 | `HINDSIGHT_API_KEY` | API key for Hindsight memory server | Yes (if memory enabled) |
 | `HINDSIGHT_API_URL` | Override Hindsight memory server URL | Optional |
 | `HERMES_HOME` | Hermes configuration and workspace root (default: `/root/.hermes`) | Optional |
-| `OMNIGENT_RUNNER_ENV_PASSTHROUGH` | Comma-separated list of env vars forwarded by Omnigent into runner processes | Optional |
 | `FIRECRAWL_API_KEY` | API key for Firecrawl web search backend | Optional |
 
 ---

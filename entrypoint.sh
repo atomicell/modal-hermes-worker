@@ -28,13 +28,30 @@ if [ -z "${CHEAPERINFERENCE_API_KEY:-}" ]; then
     fi
 fi
 
-# Override Hindsight API URL if specified via env
-if [ -n "${HINDSIGHT_API_URL:-}" ]; then
-    export HINDSIGHT_API_URL
+# Override Hindsight API URL and update API key in config if specified via env
+if [ -f "${HERMES_HOME}/hindsight/config.json" ]; then
+    python3 -c "
+import json, os
+p = '${HERMES_HOME}/hindsight/config.json'
+try:
+    with open(p, 'r') as f:
+        cfg = json.load(f)
+    if os.environ.get('HINDSIGHT_API_KEY'):
+        cfg['apiKey'] = os.environ['HINDSIGHT_API_KEY']
+    if os.environ.get('HINDSIGHT_API_URL'):
+        cfg['api_url'] = os.environ['HINDSIGHT_API_URL']
+    with open(p, 'w') as f:
+        json.dump(cfg, f, indent=2)
+except Exception as e:
+    pass
+" 2>/dev/null || true
 fi
 
 # Ensure omnigent hermes_native policy hook path is resolved
-python3 -c "import omnigent, os, pathlib; inner = pathlib.Path(omnigent.__file__).parent / 'inner'; target = pathlib.Path(omnigent.__file__).parent / 'harnesses' / 'hermes_native' / 'inner'; os.makedirs(target.parent, exist_ok=True); (not target.exists() and not os.path.islink(target)) and os.symlink(inner, target)" 2>/dev/null || true
+if [ -f /opt/venv/lib/python3.12/site-packages/omnigent/inner/hermes_policy_hook.py ]; then
+    mkdir -p /opt/venv/lib/python3.12/site-packages/omnigent/harnesses/hermes_native/inner
+    cp -f /opt/venv/lib/python3.12/site-packages/omnigent/inner/hermes_policy_hook.py /opt/venv/lib/python3.12/site-packages/omnigent/harnesses/hermes_native/inner/hermes_policy_hook.py 2>/dev/null || true
+fi
 
 # Execute command or default to hermes
 if [ "$#" -eq 0 ]; then

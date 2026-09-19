@@ -3,15 +3,15 @@ FROM ghcr.io/omnigent-ai/omnigent-host:latest
 ENV DEBIAN_FRONTEND=noninteractive \
     PYTHONUNBUFFERED=1 \
     HERMES_HOME=/root/.hermes \
-    PATH="/opt/venv/bin:$PATH" \
-    OMNIGENT_RUNNER_ENV_PASSTHROUGH="CHEAPERINFERENCE_API_KEY,HINDSIGHT_API_KEY,HINDSIGHT_API_URL,HERMES_HOME"
+    PATH="/opt/venv/bin:$PATH"
 
 # Install Hermes Agent from official repo with hindsight and firecrawl dependencies
 RUN git clone --depth 1 https://github.com/NousResearch/hermes-agent.git /opt/hermes-agent && \
     cd /opt/hermes-agent && \
     pip install --no-cache-dir -e '.[hindsight,firecrawl]' && \
     mkdir -p /root/.hermes/hindsight /etc/hermes/hindsight && \
-    python3 -c "import omnigent, os, pathlib; inner = pathlib.Path(omnigent.__file__).parent / 'inner'; target = pathlib.Path(omnigent.__file__).parent / 'harnesses' / 'hermes_native' / 'inner'; os.makedirs(target.parent, exist_ok=True); (not target.exists() and not os.path.islink(target)) and os.symlink(inner, target)"
+    mkdir -p /opt/venv/lib/python3.12/site-packages/omnigent/harnesses/hermes_native/inner && \
+    (cp -f /opt/venv/lib/python3.12/site-packages/omnigent/inner/hermes_policy_hook.py /opt/venv/lib/python3.12/site-packages/omnigent/harnesses/hermes_native/inner/hermes_policy_hook.py 2>/dev/null || true)
 
 # Copy configuration files and templates
 COPY config/config.yaml /etc/hermes/config.yaml
