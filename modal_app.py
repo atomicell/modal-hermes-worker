@@ -14,8 +14,8 @@ app = modal.App("hermes-worker")
 hermes_image = modal.Image.from_dockerfile("Dockerfile")
 
 # Secrets for API keys (never hardcoded)
-# Create in Modal dashboard or via CLI: `modal secret create hermes-secrets HERMES_CUSTOM_API_CHEAPERINFERENCE_COM_API_KEY=... HINDSIGHT_API_KEY=...`
-hermes_secrets = modal.Secret.from_name("hermes-secrets")
+# Create in Modal dashboard or via CLI: `modal secret create omnigent-llm CHEAPERINFERENCE_API_KEY=... HINDSIGHT_API_KEY=...`
+hermes_secrets = modal.Secret.from_name("omnigent-llm")
 
 
 @app.function(

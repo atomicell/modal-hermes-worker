@@ -4,7 +4,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     PYTHONUNBUFFERED=1 \
     HERMES_HOME=/root/.hermes \
     PATH="/opt/venv/bin:$PATH" \
-    OMNIGENT_RUNNER_ENV_PASSTHROUGH="HERMES_CUSTOM_API_CHEAPERINFERENCE_COM_API_KEY,CHEAPERINFERENCE_API_KEY,HINDSIGHT_API_KEY,HINDSIGHT_API_URL,HERMES_HOME"
+    OMNIGENT_RUNNER_ENV_PASSTHROUGH="CHEAPERINFERENCE_API_KEY,HINDSIGHT_API_KEY,HINDSIGHT_API_URL,HERMES_HOME"
 
 # Install Hermes Agent from official repo with hindsight and firecrawl dependencies
 RUN git clone --depth 1 https://github.com/NousResearch/hermes-agent.git /opt/hermes-agent && \

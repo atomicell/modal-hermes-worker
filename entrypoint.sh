@@ -19,13 +19,13 @@ if [ ! -f "${HERMES_HOME}/hindsight/config.json" ] && [ -f /etc/hermes/hindsight
     cp /etc/hermes/hindsight/config.json "${HERMES_HOME}/hindsight/config.json"
 fi
 
-# Map environment variables if aliases are supplied
-if [ -n "${CHEAPERINFERENCE_API_KEY:-}" ] && [ -z "${HERMES_CUSTOM_API_CHEAPERINFERENCE_COM_API_KEY:-}" ]; then
-    export HERMES_CUSTOM_API_CHEAPERINFERENCE_COM_API_KEY="${CHEAPERINFERENCE_API_KEY}"
-fi
-
-if [ -n "${OPENAI_API_KEY:-}" ] && [ -z "${HERMES_CUSTOM_API_CHEAPERINFERENCE_COM_API_KEY:-}" ]; then
-    export HERMES_CUSTOM_API_CHEAPERINFERENCE_COM_API_KEY="${OPENAI_API_KEY}"
+# Map legacy environment variables if CHEAPERINFERENCE_API_KEY is not directly supplied
+if [ -z "${CHEAPERINFERENCE_API_KEY:-}" ]; then
+    if [ -n "${HERMES_CUSTOM_API_CHEAPERINFERENCE_COM_API_KEY:-}" ]; then
+        export CHEAPERINFERENCE_API_KEY="${HERMES_CUSTOM_API_CHEAPERINFERENCE_COM_API_KEY}"
+    elif [ -n "${OPENAI_API_KEY:-}" ]; then
+        export CHEAPERINFERENCE_API_KEY="${OPENAI_API_KEY}"
+    fi
 fi
 
 # Override Hindsight API URL if specified via env

@@ -19,7 +19,7 @@ This image is configured to run Hermes Agent identically to the host environment
    - Base URL: `https://api.cheaperinference.com/v1`
    - Default Model: `glm-5.3-flash`
    - Discovered Model Catalog: Full CheaperInference models (GLM, Claude, GPT, DeepSeek, Qwen, Gemini, etc.)
-   - API Key Variable: `HERMES_CUSTOM_API_CHEAPERINFERENCE_COM_API_KEY` (or `CHEAPERINFERENCE_API_KEY`)
+   - API Key Variable: `CHEAPERINFERENCE_API_KEY`
 4. **Hindsight Memory Provider**:
    - Provider: `hindsight`
    - Mode: `local_external`
@@ -36,8 +36,7 @@ This image is configured to run Hermes Agent identically to the host environment
 
 | Variable | Description | Required |
 | --- | --- | --- |
-| `HERMES_CUSTOM_API_CHEAPERINFERENCE_COM_API_KEY` | API key for CheaperInference endpoint | Yes |
-| `CHEAPERINFERENCE_API_KEY` | Alias for CheaperInference API key | Optional |
+| `CHEAPERINFERENCE_API_KEY` | API key for CheaperInference endpoint | Yes |
 | `HINDSIGHT_API_KEY` | API key for Hindsight memory server | Yes (if memory enabled) |
 | `HINDSIGHT_API_URL` | Override Hindsight memory server URL | Optional |
 | `HERMES_HOME` | Hermes configuration and workspace root (default: `/root/.hermes`) | Optional |
@@ -61,7 +60,7 @@ docker build -t modal-hermes-worker:latest .
 ### Run Hermes Agent CLI Interactively
 ```bash
 docker run -it --rm \
-  -e HERMES_CUSTOM_API_CHEAPERINFERENCE_COM_API_KEY="your-cheaperinference-api-key" \
+  -e CHEAPERINFERENCE_API_KEY="your-cheaperinference-api-key" \
   -e HINDSIGHT_API_KEY="your-hindsight-api-key" \
   ghcr.io/atomicell/modal-hermes-worker:latest
 ```
@@ -69,7 +68,7 @@ docker run -it --rm \
 ### Run a Single Hermes Command
 ```bash
 docker run --rm \
-  -e HERMES_CUSTOM_API_CHEAPERINFERENCE_COM_API_KEY="your-cheaperinference-api-key" \
+  -e CHEAPERINFERENCE_API_KEY="your-cheaperinference-api-key" \
   -e HINDSIGHT_API_KEY="your-hindsight-api-key" \
   ghcr.io/atomicell/modal-hermes-worker:latest hermes chat -q "What tools do you have available?"
 ```
@@ -83,8 +82,8 @@ The repository includes `modal_app.py` for deploying and running Hermes Agent on
 ### 1. Set Up Modal Secrets
 Create a secret containing your API keys:
 ```bash
-modal secret create hermes-secrets \
-  HERMES_CUSTOM_API_CHEAPERINFERENCE_COM_API_KEY="your-cheaperinference-api-key" \
+modal secret create omnigent-llm \
+  CHEAPERINFERENCE_API_KEY="your-cheaperinference-api-key" \
   HINDSIGHT_API_KEY="your-hindsight-api-key"
 ```
 

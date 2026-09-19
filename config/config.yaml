@@ -2,7 +2,7 @@ model:
   default: glm-5.3-flash
   provider: custom
   base_url: https://api.cheaperinference.com/v1
-  api_key: ${HERMES_CUSTOM_API_CHEAPERINFERENCE_COM_API_KEY}
+  api_key: ${CHEAPERINFERENCE_API_KEY}
 database:
   journal_mode: wal
 runtime:
@@ -196,7 +196,7 @@ platform_toolsets:
 custom_providers:
   - name: Api.cheaperinference.com
     base_url: https://api.cheaperinference.com/v1
-    key_env: HERMES_CUSTOM_API_CHEAPERINFERENCE_COM_API_KEY
+    key_env: CHEAPERINFERENCE_API_KEY
     model: glm-5.3-flash
     models:
       claude-fable-5.1: {}
