@@ -48,11 +48,42 @@ fi
 export OMNIGENT_TELEMETRY_ENABLED="${OMNIGENT_TELEMETRY_ENABLED:-true}"
 export OTEL_EXPORTER_OTLP_ENDPOINT="${OTEL_EXPORTER_OTLP_ENDPOINT:-https://159.195.251.138.sslip.io:5000}"
 export OTEL_EXPORTER_OTLP_PROTOCOL="${OTEL_EXPORTER_OTLP_PROTOCOL:-http/protobuf}"
-export OTEL_EXPORTER_OTLP_TRACES_HEADERS="${OTEL_EXPORTER_OTLP_TRACES_HEADERS:-Authorization=Basic __REDACTED_MLFLOW_CREDENTIAL__,x-mlflow-experiment-id=1}"
+export OTEL_EXPORTER_OTLP_TRACES_HEADERS="${OTEL_EXPORTER_OTLP_TRACES_HEADERS:-x-mlflow-experiment-id=1}"
 export OMNIGENT_OTEL_HTTP_CLIENT_INSTRUMENTATION="${OMNIGENT_OTEL_HTTP_CLIENT_INSTRUMENTATION:-false}"
 export OMNIGENT_OTEL_CAPTURE_CONTENT="${OMNIGENT_OTEL_CAPTURE_CONTENT:-true}"
 export MLFLOW_TRACKING_USERNAME="${MLFLOW_TRACKING_USERNAME:-admin}"
-export MLFLOW_TRACKING_PASSWORD="${MLFLOW_TRACKING_PASSWORD:-__REDACTED_MLFLOW_CREDENTIAL__}"
+
+# Resolve MLflow authentication only from runtime-injected credentials. Never
+# put the password or a derived Basic Auth header in the image or repository.
+python3 -c "
+import base64
+import os
+from pathlib import Path
+
+username = os.environ.get('MLFLOW_TRACKING_USERNAME')
+password = os.environ.get('MLFLOW_TRACKING_PASSWORD')
+if username and password:
+    authorization = 'Basic ' + base64.b64encode(f'{username}:{password}'.encode()).decode()
+    for path in (
+        Path(os.environ['HERMES_HOME']) / 'config.yaml',
+        Path(os.environ['HERMES_HOME']) / 'hermes_otel.yaml',
+        Path(os.environ['HERMES_HOME']) / 'plugins/hermes_otel/config.yaml',
+    ):
+        if path.is_file():
+            content = path.read_text()
+            path.write_text(content.replace('__MLFLOW_AUTHORIZATION__', authorization))
+    if 'Authorization=' not in os.environ.get('OTEL_EXPORTER_OTLP_TRACES_HEADERS', ''):
+        os.environ['OTEL_EXPORTER_OTLP_TRACES_HEADERS'] = (
+            f'Authorization={authorization},x-mlflow-experiment-id=1'
+        )
+    # Pass the derived value to the exporter process without persisting it.
+    with open('/tmp/hermes-otel-headers', 'w') as headers_file:
+        headers_file.write(os.environ['OTEL_EXPORTER_OTLP_TRACES_HEADERS'])
+else:
+    raise SystemExit('MLFLOW_TRACKING_PASSWORD must be injected at runtime')
+"
+export OTEL_EXPORTER_OTLP_TRACES_HEADERS="$(< /tmp/hermes-otel-headers)"
+rm -f /tmp/hermes-otel-headers
 
 # Override Hindsight API URL and update API key in config if specified via env
 if [ -f "${HERMES_HOME}/hindsight/config.json" ]; then

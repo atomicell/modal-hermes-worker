@@ -10,4 +10,4 @@ backends:
     logs: false
     headers:
       x-mlflow-experiment-id: "1"
-      Authorization: "Basic __REDACTED_MLFLOW_CREDENTIAL__"
+      Authorization: "__MLFLOW_AUTHORIZATION__"

@@ -196,7 +196,7 @@ custom_providers:
   - name: mlflow
     base_url: https://159.195.251.138.sslip.io:5000/gateway/mlflow/v1
     extra_headers:
-      Authorization: "Basic __REDACTED_MLFLOW_CREDENTIAL__"
+      Authorization: "__MLFLOW_AUTHORIZATION__"
     model: openai-luna
     models:
       openai-luna: {}
