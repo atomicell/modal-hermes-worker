@@ -11,7 +11,7 @@ agent:
   service_tier: ''
   fast_auto_seconds: 60
   verbose: false
-  reasoning_effort: medium
+  reasoning_effort: none
   personalities: {}
 terminal:
   backend: local
