@@ -1,0 +1,13 @@
+enabled: true
+force_flush_on_session_end: true
+capture_sender_id: true
+capture_conversation_history: true
+backends:
+  - type: otlp
+    name: mlflow
+    endpoint: https://159.195.251.138.sslip.io:5000/v1/traces
+    metrics: false
+    logs: false
+    headers:
+      x-mlflow-experiment-id: "1"
+      Authorization: "Basic __REDACTED_MLFLOW_CREDENTIAL__"

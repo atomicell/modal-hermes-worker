@@ -1,8 +1,7 @@
 model:
-  default: glm-5.3-flash
+  default: openai-luna
   provider: custom
-  base_url: https://api.cheaperinference.com/v1
-  api_key: ${CHEAPERINFERENCE_API_KEY}
+  base_url: https://159.195.251.138.sslip.io:5000/gateway/mlflow/v1
 database:
   journal_mode: wal
 runtime:
@@ -194,6 +193,13 @@ platform_toolsets:
   google_chat:
     - hermes-google_chat
 custom_providers:
+  - name: mlflow
+    base_url: https://159.195.251.138.sslip.io:5000/gateway/mlflow/v1
+    extra_headers:
+      Authorization: "Basic __REDACTED_MLFLOW_CREDENTIAL__"
+    model: openai-luna
+    models:
+      openai-luna: {}
   - name: Api.cheaperinference.com
     base_url: https://api.cheaperinference.com/v1
     key_env: CHEAPERINFERENCE_API_KEY
@@ -298,3 +304,9 @@ known_builtin_toolsets:
     - web
     - x_search
     - yuanbao
+
+plugins:
+  enabled:
+    - hermes_otel
+    - hindsight
+  disabled: []
