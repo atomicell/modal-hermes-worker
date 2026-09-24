@@ -3,13 +3,14 @@ FROM ghcr.io/omnigent-ai/omnigent-host:latest
 ENV DEBIAN_FRONTEND=noninteractive \
     PYTHONUNBUFFERED=1 \
     HERMES_HOME=/root/.hermes \
+    OMNIGENT_OTEL_HTTP_CLIENT_INSTRUMENTATION=false \
     PATH="/opt/venv/bin:$PATH"
 
 # Install Hermes Agent from official repo with hindsight and firecrawl dependencies
 RUN git clone --depth 1 https://github.com/NousResearch/hermes-agent.git /opt/hermes-agent && \
     cd /opt/hermes-agent && \
     pip install --no-cache-dir -e '.[hindsight,firecrawl]' && \
-    pip install --no-cache-dir mlflow opentelemetry-api opentelemetry-sdk opentelemetry-exporter-otlp-proto-http && \
+    pip install --no-cache-dir mlflow opentelemetry-api opentelemetry-sdk opentelemetry-exporter-otlp-proto-http opentelemetry-instrumentation-httpx opentelemetry-instrumentation-fastapi && \
     mkdir -p /root/.hermes/hindsight /etc/hermes/hindsight /root/.hermes/plugins/hermes_otel /etc/hermes/plugins/hermes_otel /root/.codex /etc/codex && \
     mkdir -p /opt/venv/lib/python3.12/site-packages/omnigent/harnesses/hermes_native/inner && \
     (cp -f /opt/venv/lib/python3.12/site-packages/omnigent/inner/hermes_policy_hook.py /opt/venv/lib/python3.12/site-packages/omnigent/harnesses/hermes_native/inner/hermes_policy_hook.py 2>/dev/null || true)
